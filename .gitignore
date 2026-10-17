@@ -1,0 +1,6 @@
+/build*/
+/output/
+/.vs/
+*.user
+/CMakeUserPresets.json
+01_CyberPunk-bleep.png
