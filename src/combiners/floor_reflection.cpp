@@ -46,10 +46,10 @@ Pixel shader(const Image &environment, float x, float y, float reflectivity, flo
 
 } // namespace
 
-void floorReflection(Image& scene, int pixelScale)
+void floorReflection(Image& scene, int pixelScale, RandomSeed seed)
 {
     Image source = scene;
-    Image ripples = noise(scene.width, scene.height, 66, 0.2f);
+    Image ripples = noise(scene.width, scene.height, seed, 0.2f);
 
     auto c = channels(scene);
     auto cc = channels(source);

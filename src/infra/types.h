@@ -145,7 +145,8 @@ struct RenderSettings {
     std::uint32_t seed = 19;
 
     void validate() const {
-        if (width < 64 || height < 64 || (aa_scale % 2 != 0)) {
+        const bool aaValid = aa_scale > 0 && (aa_scale == 1 || (aa_scale % 2) == 0);
+        if (width < 64 || height < 64 || !aaValid) {
             throw std::invalid_argument("Invalid render settings");
         }
     }
@@ -176,6 +177,8 @@ inline float clamp(float x, float from, float to) {
 inline float clamp01(float x) {
     return clamp(x, 0, 1);
 }
+
+using RandomSeed = std::uint32_t;
 
 } // namespace cyber
 

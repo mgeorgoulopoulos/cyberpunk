@@ -3,5 +3,5 @@
 
 namespace cyber {
 // Render sky, clouds and 80s sun
-void sunset(Image& scene, int pixelScale = 1);
+void sunset(Image& scene, int pixelScale, RandomSeed seed);
 }

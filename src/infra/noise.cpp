@@ -15,7 +15,7 @@ void addWeighed(const Image& src, Image& dstImage, float weight) {
     }
 }
 
-Image noise(int width, int height, std::uint32_t seed, float stretch)
+Image noise(int width, int height, RandomSeed seed, float stretch)
 {
     stretch = std::abs(stretch);
 

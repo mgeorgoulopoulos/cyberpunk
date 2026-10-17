@@ -96,10 +96,10 @@ Image warp(const Image& source, int pixelScale) {
     return result;
 }
 
-Image clouds(int w, int h, int pixelScale) {
+Image clouds(int w, int h, int pixelScale, RandomSeed seed) {
     Image result(w, h, 1);
 
-    RandomUniform random(31);
+    RandomUniform random(seed);
 
     float weight = 1.0f;
     float totalWeight = 0.0f;
@@ -132,9 +132,9 @@ Image clouds(int w, int h, int pixelScale) {
 }
 } // namespace
 
-void sunset(Image& scene, int pixelScale)
+void sunset(Image& scene, int pixelScale, RandomSeed seed)
 {
-    const Image cloudImage = clouds(scene.width, scene.height, pixelScale);
+    const Image cloudImage = clouds(scene.width, scene.height, pixelScale, seed);
 
     float* buffer = &scene.pixels[0];
     const float* cloudBuffer = &cloudImage.pixels[0];

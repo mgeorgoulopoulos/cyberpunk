@@ -3,9 +3,14 @@
 #include <cmath>
 
 namespace cyber {
-RandomUniform::RandomUniform(std::uint32_t seed) : engine(seed) {}
+RandomUniform::RandomUniform(RandomSeed seed) : engine(seed) {
+}
 
 float RandomUniform::next() {
     return distribution(engine);
+}
+
+RandomSeed RandomUniform::nextSeed() {
+    return (RandomSeed)engine();
 }
 } // cyber

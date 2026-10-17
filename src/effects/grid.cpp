@@ -82,12 +82,13 @@ std::optional<Channels> gridShader(const Image &scene, float u, float v,
 
 } // namespace
 
-void grid(Image& scene, int pixelScale)
+void grid(Image& scene, int pixelScale, RandomSeed seed)
 {
+    RandomUniform random(seed);
+    
     // Textures
-    const Image wetness = noise(scene.width, scene.height, 122, 0.18);
-    const Image rough = noise(scene.width, scene.height, 81);
-    RandomUniform random(9);
+    const Image wetness = noise(scene.width, scene.height, random.nextSeed(), 0.18);
+    const Image rough = noise(scene.width, scene.height, random.nextSeed());
 
     std::vector<float*> c = channels(scene);
     

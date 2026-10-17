@@ -3,5 +3,5 @@
 
 namespace cyber {
 // Render reflections
-void floorReflection(Image& scene, int pixelScale = 1);
+void floorReflection(Image& scene, int pixelScale, RandomSeed seed);
 }

@@ -87,7 +87,7 @@ Pixel fatDropShader(const BoundingBox &bounds, float x, float y) {
 
 } // namespace
 
-void rain(Image &scene, std::uint32_t seed, int pixelScale) {
+void rain(Image &scene, int pixelScale, RandomSeed seed) {
     // Generate streaks
     RandomUniform random(seed);
     auto uniform = [&](float low, float high) { return lerp(low, high, random.next()); };

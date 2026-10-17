@@ -1,12 +1,15 @@
 #pragma once
+#include "infra/types.h"
+
 #include <cstdint>
 #include <random>
 
 namespace cyber {
 class RandomUniform {
 public:
-    explicit RandomUniform(std::uint32_t seed);
+    explicit RandomUniform(RandomSeed seed);
     float next(); // Uniform in [0, 1).
+    RandomSeed nextSeed();
 
 private:
     std::mt19937 engine;

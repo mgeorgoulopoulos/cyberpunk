@@ -3,5 +3,5 @@
 
 namespace cyber {
 // Reflective grid plane
-void grid(Image& scene, int pixelScale = 1);
+void grid(Image& scene, int pixelScale, RandomSeed seed);
 }

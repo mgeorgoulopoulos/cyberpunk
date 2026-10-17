@@ -1,6 +1,7 @@
 #include "01_cyberpunk.h"
 
 #include "infra/image_io.h"
+#include "infra/random_uniform.h"
 #include "effects/sunset.h"
 #include "effects/grid.h"
 #include "effects/knot.h"
@@ -18,6 +19,8 @@
 namespace cyber::r01_cyberpunk {
 Image render(const RenderSettings& settings)
 {
+    RandomUniform random(settings.seed);
+
     const int scale = settings.aa_scale;
 
     Image scene(settings.width * scale, settings.height * scale, ChannelCount);
@@ -26,14 +29,14 @@ Image render(const RenderSettings& settings)
     const Image materialImage = loadImage(assetPath / "robo_material.png");
 
     // Scene
-    sunset(scene, scale);
-    grid(scene, scale);
+    sunset(scene, scale, random.nextSeed());
+    grid(scene, scale, random.nextSeed());
     knot(scene);
     robo(scene, roboImage, materialImage, scale);
-    floorReflection(scene, scale);
+    floorReflection(scene, scale, random.nextSeed());
 
     // Rain & refract
-    rain(scene, settings.seed, scale);
+    rain(scene, scale, random.nextSeed());
     refraction(scene, scale);
 
     // Post FX

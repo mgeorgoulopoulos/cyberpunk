@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
 		.width = 1280,
 		.height = 720,
 		.aa_scale = 2,
-		.seed = 19
+		.seed = 42
 	};
 	
 	try {
