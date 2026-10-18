@@ -21,10 +21,10 @@ namespace cyber::r01_cyberpunk {
 Image render(const RenderSettings &settings) {
     RandomUniform random(settings.seed);
 
-    const int scale = settings.aa_scale;
+    const int scale = settings.aaScale;
 
     Image scene(settings.width * scale, settings.height * scale, ChannelCount);
-    const auto assetPath = std::filesystem::path(CP_ASSET_DIR) / "01_cyberpunk";
+    const auto assetPath = std::filesystem::path("./assets") / "01_cyberpunk";
     const Image roboImage = loadImage(assetPath / "robo.png");
     const Image materialImage = loadImage(assetPath / "robo_material.png");
     const Image grader = loadImage(assetPath / "color_grader.png");

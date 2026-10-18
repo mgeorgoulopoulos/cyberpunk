@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.25)
 project(Cyberpunk LANGUAGES C CXX)
 
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -28,12 +30,11 @@ set(RENDER_SOURCES
 add_executable(cyberpunk src/main.cpp ${RENDER_SOURCES})
 target_include_directories(cyberpunk PRIVATE src)
 target_link_libraries(cyberpunk PRIVATE imago_png Microsoft.GSL::GSL)
-target_compile_definitions(cyberpunk PRIVATE CP_ASSET_DIR="${CMAKE_CURRENT_SOURCE_DIR}/assets")
 if(MSVC)
     target_compile_options(cyberpunk PRIVATE /W4 /permissive- /fp:precise /utf-8 /wd4244 /wd4267 /wd4305)
     set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT cyberpunk)
     set_target_properties(cyberpunk PROPERTIES
-        VS_DEBUGGER_COMMAND_ARGUMENTS "--output \"${CMAKE_CURRENT_BINARY_DIR}/render.png\""
+        VS_DEBUGGER_COMMAND_ARGUMENTS ""
         VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
 else()
     target_compile_options(cyberpunk PRIVATE -Wall -Wextra -Wpedantic)

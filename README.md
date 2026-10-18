@@ -5,11 +5,11 @@ each round adds one more render and some new effects.
 
 # Screenshots
 
-## 01: Cyberpunk
+## 01: Reflections of Tomorrow
 
-![01: Cyberpunk](01_Cyberpunk.png)
+*Somewhere, it's still 1985.*
 
-To be revealed after the round.
+![01: Reflections of Tomorrow](01_ReflectionsOfTomorrow.png)
 
 ## Why and how
 

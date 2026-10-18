@@ -141,11 +141,11 @@ enum Channel { R, G, B, Depth, Emission, Chrome, Dx, Dy, Refract,
 struct RenderSettings {
     int width = 1280;
     int height = 720;
-    int aa_scale = 2;
-    std::uint32_t seed = 19;
+    int aaScale = 2;
+    int seed = 19;
 
     void validate() const {
-        const bool aaValid = aa_scale > 0 && (aa_scale == 1 || (aa_scale % 2) == 0);
+        const bool aaValid = aaScale > 0 && (aaScale & (aaScale - 1)) == 0;
         if (width < 64 || height < 64 || !aaValid) {
             throw std::invalid_argument("Invalid render settings");
         }
