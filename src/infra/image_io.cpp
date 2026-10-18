@@ -35,8 +35,10 @@ Image loadImage(const std::filesystem::path& path) {
     }
 
     // Convert to float
-    if (img_convert(decoded, IMG_FMT_RGBAF) != 0) {
-        throw std::runtime_error("Cannot convert PNG to RGBA: " + path.string());
+    const int channelCount = img_has_alpha(decoded) ? 4 : 3;
+    const auto format = channelCount == 4 ? IMG_FMT_RGBAF : IMG_FMT_RGBF;
+    if (img_convert(decoded, format) != 0) {
+        throw std::runtime_error("Cannot convert PNG to float: " + path.string());
     }
 
     // Pack and return Image
@@ -46,13 +48,13 @@ Image loadImage(const std::filesystem::path& path) {
         throw std::runtime_error("PNG dimensions are invalid: " + path.string());
     }
 
-    Image result(w, h, 4);
+    Image result(w, h, channelCount);
     const int pixelCount = w * h;
-    const float* rgba = static_cast<const float*>(decoded->pixels);
+    const float* pixels = static_cast<const float*>(decoded->pixels);
     
     for (size_t i = 0; i < pixelCount; ++i) {
-        for (int c = 0; c < 4; ++c) {
-            result.pixels[c * pixelCount + i] = rgba[4 * i + c];
+        for (int c = 0; c < channelCount; ++c) {
+            result.pixels[c * pixelCount + i] = pixels[channelCount * i + c];
         }
     }
 

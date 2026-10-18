@@ -3,7 +3,7 @@
 #include <filesystem>
 
 namespace cyber {
-// Load png as RGBA
+// Load png as RGB or RGBA
 Image loadImage(const std::filesystem::path& path);
 
 // Write png as RGB (when 3 channels provided) or RGBA (4 channels provided).

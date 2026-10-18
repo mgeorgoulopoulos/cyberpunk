@@ -7,6 +7,7 @@
 #include "effects/knot.h"
 #include "effects/robo.h"
 #include "effects/rain.h"
+#include "combiners/color_grader.h"
 #include "combiners/floor_reflection.h"
 #include "combiners/refraction.h"
 #include "combiners/bloom.h"
@@ -17,8 +18,7 @@
 #include <limits>
 
 namespace cyber::r01_cyberpunk {
-Image render(const RenderSettings& settings)
-{
+Image render(const RenderSettings &settings) {
     RandomUniform random(settings.seed);
 
     const int scale = settings.aa_scale;
@@ -27,6 +27,7 @@ Image render(const RenderSettings& settings)
     const auto assetPath = std::filesystem::path(CP_ASSET_DIR) / "01_cyberpunk";
     const Image roboImage = loadImage(assetPath / "robo.png");
     const Image materialImage = loadImage(assetPath / "robo_material.png");
+    const Image grader = loadImage(assetPath / "color_grader.png");
 
     // Scene
     sunset(scene, scale, random.nextSeed());
@@ -39,17 +40,18 @@ Image render(const RenderSettings& settings)
     rain(scene, scale, random.nextSeed());
     refraction(scene, scale);
 
-    // Post FX
+    // Post FX (HDR)
     Image rgb(scene.width, scene.height, 3);
     copy(rgb, scene);
     const float bloomAmount = 0.8f;
     const Image glow = bloom(scene, bloomAmount, scale);
     add(rgb, glow);
-    
-    // AA
-    return antialias(tone(rgb), scale);
+
+    // Post-post
+    rgb = tone(rgb);
+    rgb = antialias(rgb, scale);
+    rgb = colorGrade(rgb, grader);
+
+    return rgb;
 }
 } // namespace cyber::r01_cyberpunk
-
-
-

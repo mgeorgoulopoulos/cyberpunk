@@ -21,6 +21,7 @@ set(RENDER_SOURCES
     src/combiners/refraction.cpp
     src/combiners/bloom.cpp
     src/combiners/tone.cpp
+    src/combiners/color_grader.cpp
     src/combiners/antialias.cpp
     src/renders/01_cyberpunk.cpp
 )
@@ -36,6 +37,22 @@ if(MSVC)
         VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
 else()
     target_compile_options(cyberpunk PRIVATE -Wall -Wextra -Wpedantic)
+endif()
+
+add_executable(ColorGrader
+    tools/color_grader/ColorGraderMain.cpp
+    src/infra/image_io.cpp
+    src/infra/image_io.h
+    src/infra/types.h)
+target_include_directories(ColorGrader PRIVATE src)
+target_link_libraries(ColorGrader PRIVATE imago_png Microsoft.GSL::GSL)
+set_target_properties(ColorGrader PROPERTIES
+    OUTPUT_NAME "ColorGrader"
+    VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+if(MSVC)
+    target_compile_options(ColorGrader PRIVATE /W4 /permissive- /utf-8)
+else()
+    target_compile_options(ColorGrader PRIVATE -Wall -Wextra -Wpedantic)
 endif()
 
 file(GLOB_RECURSE API_HEADERS CONFIGURE_DEPENDS "src/*.h")

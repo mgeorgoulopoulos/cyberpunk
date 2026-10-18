@@ -6,26 +6,20 @@
 #include <exception>
 
 int main(int argc, char *argv[]) {
-	using namespace cyber;
+    using namespace cyber;
 
-	const std::filesystem::path output{"./0101_CyberPunk.png"};
+    const std::filesystem::path output{"./01_CyberPunk.png"};
 
-	RenderSettings settings {
-		.width = 1280,
-		.height = 720,
-		.aa_scale = 2,
-		.seed = 42
-	};
-	
-	try {
-		settings.validate();
-		const Image image = r01_cyberpunk::render(settings);
-		saveImage(image, output);
-	}
-	catch (const std::exception& e) {
-		std::printf("E: %s\n", e.what());
-		return 1;
-	}
-	
-	return 0;
+    RenderSettings settings{.width = 1280, .height = 720, .aa_scale = 2, .seed = 42};
+
+    try {
+        settings.validate();
+        const Image image = r01_cyberpunk::render(settings);
+        saveImage(image, output);
+    } catch (const std::exception &e) {
+        std::printf("E: %s\n", e.what());
+        return 1;
+    }
+
+    return 0;
 }

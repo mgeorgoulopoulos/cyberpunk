@@ -5,6 +5,7 @@ option(CP_ENABLE_CLANG_FORMAT "Validate clang-format setup for editor use" OFF)
 set(CP_FORMAT_STYLE "${PROJECT_SOURCE_DIR}/.clang-format")
 set_source_files_properties("${CP_FORMAT_STYLE}" PROPERTIES HEADER_FILE_ONLY TRUE)
 target_sources(cyberpunk PRIVATE "${CP_FORMAT_STYLE}")
+target_sources(ColorGrader PRIVATE "${CP_FORMAT_STYLE}")
 source_group("Formatting" FILES "${CP_FORMAT_STYLE}")
 
 if(NOT CP_ENABLE_CLANG_FORMAT)
