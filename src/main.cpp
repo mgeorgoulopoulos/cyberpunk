@@ -21,7 +21,7 @@ const std::vector<RenderInfo> infos{
     {"Reflections of Tomorrow", "ReflectionsOfTomorrow", "Somewhere, it's still 1985."}};
 
 struct Config {
-    cyber::RenderSettings settings = {.width = 3840, .height = 2160, .aaScale = 2, .seed = 42};
+    cyber::RenderSettings settings = {.width = 3840, .height = 2160, .aaScale = 2, .seed = 147994};
     int renderId = 1;
 
     void validate() { settings.validate();
