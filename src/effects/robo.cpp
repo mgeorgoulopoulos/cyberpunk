@@ -29,7 +29,7 @@ Tensor<3> normalize(const Tensor<3>& t) {
 }
 
 Pixel roboShader(const Image& environment, const Image& normalMap, 
-    const Image &material, float u, float v) {
+    const Image &material, const Image &emissive, float u, float v) {
     Pixel pixel;
 
     pixel.color = Tensor<3>{ 1, 0, 0 };
@@ -65,6 +65,7 @@ Pixel roboShader(const Image& environment, const Image& normalMap,
 
     for (int c = 0; c < 3; c++) {
         pixel.color[c] += 2.0f * sampleUv(material, c, u, v);
+        pixel.color[c] += 24.0f * sampleUv(emissive, c, u, v);
     }
 
     const float brightest = std::max({ pixel.color[0], pixel.color[1], pixel.color[2] });
@@ -83,13 +84,13 @@ Image rgb(const Image& image) {
 }
 } // namespace
 
-    void robo(Image& scene, const Image& normalMap, const Image& material, int pixelScale) {
+    void robo(Image& scene, const Image& normalMap, const Image& material, const Image& emissive, int pixelScale) {
         const int height = int(scene.height * 0.77f);
         const int width = int((float)height * normalMap.width / normalMap.height);
 
         const Image environment = boxBlur(rgb(scene), 2 * pixelScale);
 
-        const int left = (int) (scene.width * 0.055f);
+        const int left = (int) (scene.width * 0.070f);
         const int top = (int) (scene.height * 0.13f);
 
         auto c = channels(scene);
@@ -100,7 +101,7 @@ Image rgb(const Image& image) {
             for (int i = 0; i < width; i++) {
                 const float u = i / (width - 1.0f);
 
-                const Pixel p = roboShader(environment, normalMap, material, u, v);
+                const Pixel p = roboShader(environment, normalMap, material, emissive, u, v);
 
                 if (p.alpha > 0.0f && c[Depth][offset] > p.depth) {
                     c[R][offset] = lerp(c[R][offset], p.color[0], p.alpha);

@@ -27,14 +27,19 @@ Image render(const RenderSettings &settings) {
     const auto assetPath = std::filesystem::path("./assets") / "01_cyberpunk";
     const Image roboImage = loadImage(assetPath / "robo.png");
     const Image materialImage = loadImage(assetPath / "robo_material.png");
+    const Image emissiveImage = loadImage(assetPath / "robo_emissive.png");
     const Image grader = loadImage(assetPath / "color_grader.png");
 
     // Scene
     sunset(scene, scale, random.nextSeed());
     grid(scene, scale, random.nextSeed());
     knot(scene);
-    robo(scene, roboImage, materialImage, scale);
-    floorReflection(scene, random.nextSeed());
+    {
+        Image environment(scene.width, scene.height, Emission + 1);
+        copy(environment, scene);
+        robo(scene, roboImage, materialImage, emissiveImage, scale);
+        floorReflection(scene, environment, random.nextSeed());
+    }
 
     // Rain & refract
     rain(scene, scale, random.nextSeed());
