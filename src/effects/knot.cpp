@@ -105,16 +105,17 @@ std::optional<Pixel> knotShader(int x, int y, const Ball& ball, float radius) {
 
     const float color = 0.5f + 0.5f * std::sin(ball.t * 3.0f + 0.5f);
 
-    pixel.color[0] = 2.2f - 2.0f * color;
-    pixel.color[1] = 0.07f + 0.95f * color;
-    pixel.color[2] = 2.0f;
+    const float mult = 0.5f;
+    pixel.color[0] = mult * (2.2f - 2.0f * color);
+    pixel.color[1] = mult * (0.07f + 0.95f * color);
+    pixel.color[2] = mult * 2.0f;
 
     const float light = 0.05f + std::pow(normalZ, 7.0f) * 1.4f;
     pixel.color *= light;
 
     pixel.depth = 14 + ball.center[2] - normalZ;
 
-    pixel.emissive = 0.3f + std::pow(normalZ, 4.0f) * 2.6f;
+    pixel.emissive = 0.3f + std::pow(normalZ, 4.0f);
     pixel.reflectivity = 0.0f;
 
     return pixel;

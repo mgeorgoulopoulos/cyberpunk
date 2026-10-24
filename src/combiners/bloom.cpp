@@ -21,7 +21,7 @@ Image bloom(const Image& scene, float amount, int pixelScale)
     });
 
     // Blur
-    Image glow = boxBlur(bright, 4 * pixelScale);
+    Image glow = boxBlur(bright, std::max(1, scene.height / 45));
     for (float& value : glow.pixels) {
         value *= amount;
     }
