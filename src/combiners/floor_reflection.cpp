@@ -10,13 +10,25 @@ struct Pixel {
     Tensor<3> color;
     float emission{};
 };
-Pixel shader(const Image &environment, float x, float y, float reflectivity, float ripple, int pixelScale) {
+Pixel shader(const Image &environment, float x, float y, float reflectivity, float ripple) {
     Pixel pixel;
 
     ripple -= 0.5f;
 
-    float dx = ripple * 35 * pixelScale + std::sin((y * 0.35f + x * 0.015f) / pixelScale) * 2.5f * pixelScale;
-    float dy = ripple * 8 * pixelScale + std::sin((x * 0.11f + y * 0.20f) / pixelScale) * 1.3f * pixelScale;
+    const float waveSize = environment.width / 1280.0f;
+    const float phaseX = (y * 0.14f + x * 0.004f) / waveSize;
+    const float phaseY = (x * 0.025f + y * 0.09f) / waveSize;
+
+    // irregular waves
+    const float wavyness = clamp01(reflectivity);
+    const float waveX = lerp(std::sin(phaseX * 1.6f), std::sin(phaseX * 0.6f), wavyness);
+    const float waveY = lerp(std::sin(phaseY * 1.6f), std::sin(phaseY * 0.6f), wavyness);
+
+    // fade with distance
+    const float z = sample(environment, Depth, x, y);
+    const float depthFade = 4.2f / std::max(4.2f, z);
+    float dx = (ripple * 70 + waveX * 9) * waveSize * depthFade;
+    float dy = (ripple * 12 + waveY * 3) * waveSize * depthFade;
 
     float rx = x + dx;
     float ry = environment.height * 1.19f - y + dy;
@@ -46,10 +58,10 @@ Pixel shader(const Image &environment, float x, float y, float reflectivity, flo
 
 } // namespace
 
-void floorReflection(Image& scene, int pixelScale, RandomSeed seed)
+void floorReflection(Image& scene, RandomSeed seed)
 {
     Image source = scene;
-    Image ripples = noise(scene.width, scene.height, seed, 0.2f);
+    Image ripples = noise(scene.width, scene.height, seed, 1.0f);
 
     auto c = channels(scene);
     auto cc = channels(source);
@@ -64,7 +76,7 @@ void floorReflection(Image& scene, int pixelScale, RandomSeed seed)
             if (reflectivity > 0) {
                 const float ripple = r[0][offset];
 
-                const Pixel p = shader(source, i, j, reflectivity, ripple, pixelScale);
+                const Pixel p = shader(source, i, j, reflectivity, ripple);
 
                 c[R][offset] = p.color[0];
                 c[G][offset] = p.color[1];

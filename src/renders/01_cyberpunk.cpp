@@ -34,7 +34,7 @@ Image render(const RenderSettings &settings) {
     grid(scene, scale, random.nextSeed());
     knot(scene);
     robo(scene, roboImage, materialImage, scale);
-    floorReflection(scene, scale, random.nextSeed());
+    floorReflection(scene, random.nextSeed());
 
     // Rain & refract
     rain(scene, scale, random.nextSeed());
